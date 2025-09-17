@@ -169,13 +169,14 @@ h1, h2, h3, h4, h5, h6 {
 /* HBK Section */
 .hbk {
     padding: 80px 60px;
+    padding-right: 0;
     font-family: "Cairo", sans-serif;
 }
 
-.container {
+/* .container {
     max-width: 1200px;
     margin: 0 auto;
-}
+} */
 
 .header {
     display: flex;
@@ -208,6 +209,7 @@ h1, h2, h3, h4, h5, h6 {
     gap: 20px;
     min-width: 200px;
     margin-top: 6rem;
+    margin-left: 200px;
 }
 
 .unit-option {
@@ -246,12 +248,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .image-gallery {
     position: relative;
-    border-radius: 15px;
+    /* border-radius: 15px; */
     overflow: hidden;
+    /* width: 80%;
+    margin-left: 100px; */
+    
 }
 
 .gallery-images {
     display: none;
+    /* margin-left: 100px; */
 }
 
 .gallery-images.active {
@@ -269,11 +275,88 @@ h1, h2, h3, h4, h5, h6 {
     display: block;
 }
 
+.gallery-arrows-container{
+    width: 150px;   
+    height: 30px;
+    position: relative;
+    top: 60px;
+    left: 1060px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+/* Responsive adjustments for gallery arrows */
+@media (max-width: 1400px) {
+    .gallery-arrows-container {
+        left: 900px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .gallery-arrows-container {
+        left: 700px;
+        width: 150px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .gallery-arrows-container {
+        left: 500px;
+        width: 150px;
+        top: 40px;
+    }
+    
+    .gallery-arrows {
+        padding: 12px 15px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-arrows-container {
+        /* position: static;
+        width: 100%;
+        justify-content: center;
+        margin-top: 20px;
+        gap: 40px; */
+        left: 300px;
+    }
+    
+    .gallery-arrows {
+        position: static;
+        transform: none;
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .prev-arrow {
+        left: auto;
+    }
+    
+    .next-arrow {
+        right: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-arrows-container {
+        gap: 20px;
+        left: 100px;
+    }
+    
+    .gallery-arrows {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
 .gallery-arrows {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(48, 47, 47, 0.8);
     border: none;
     padding: 15px 20px;
     font-size: 18px;
@@ -290,9 +373,9 @@ h1, h2, h3, h4, h5, h6 {
     right: 20px;
 }
 
-.gallery-arrows:hover {
+/* .gallery-arrows:hover {
     background: rgba(255, 255, 255, 1);
-}
+} */
 
 .gallery-nav {
     display: flex;

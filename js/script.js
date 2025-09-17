@@ -45,7 +45,11 @@ document.addEventListener("submit", function (e) {
 document.addEventListener("DOMContentLoaded", () => {
     const openBtn = document.getElementById('openForm');
     const modal = document.getElementById('formModal');
+    
+    if (!openBtn || !modal) return; // Exit if elements don't exist
+    
     const closeBtn = modal.querySelector('.close');
+    if (!closeBtn) return; // Exit if close button doesn't exist
 
     // Open popup
     openBtn.addEventListener('click', (e) => {
@@ -69,7 +73,11 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const openBtn = document.getElementById('openForm_1');
     const modal = document.getElementById('formModal_1');
+    
+    if (!openBtn || !modal) return; // Exit if elements don't exist
+    
     const closeBtn = modal.querySelector('.close');
+    if (!closeBtn) return; // Exit if close button doesn't exist
 
     // Open popup
     openBtn.addEventListener('click', (e) => {
@@ -96,15 +104,20 @@ document.addEventListener("DOMContentLoaded", () => {
 const tabs = document.querySelectorAll('.tab');
 const sliders = document.querySelectorAll('.slider');
 
-tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
+if (tabs.length > 0) {
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
 
-        sliders.forEach(slider => slider.classList.remove('active'));
-        document.getElementById(tab.dataset.slider).classList.add('active');
+            sliders.forEach(slider => slider.classList.remove('active'));
+            const targetSlider = document.getElementById(tab.dataset.slider);
+            if (targetSlider) {
+                targetSlider.classList.add('active');
+            }
+        });
     });
-});
+}
 
 // Handle slider controls
 document.querySelectorAll('.slider').forEach(slider => {
@@ -114,21 +127,29 @@ document.querySelectorAll('.slider').forEach(slider => {
     const counter = slider.querySelector('.counter');
     let index = 0;
 
+    if (slides.length === 0 || !counter) return; // Exit if no slides or counter
+
     function updateSlider() {
         slides.forEach(s => s.classList.remove('active'));
         slides[index].classList.add('active');
         counter.textContent = `${index + 1} / ${slides.length}`;
     }
 
-    prev.addEventListener('click', () => {
-        index = (index - 1 + slides.length) % slides.length;
-        updateSlider();
-    });
+    if (prev) {
+        prev.addEventListener('click', () => {
+            index = (index - 1 + slides.length) % slides.length;
+            updateSlider();
+        });
+    }
 
-    next.addEventListener('click', () => {
-        index = (index + 1) % slides.length;
-        updateSlider();
-    });
+    if (next) {
+        next.addEventListener('click', () => {
+            index = (index + 1) % slides.length;
+            updateSlider();
+        });
+    }
+
+    updateSlider(); // Initialize
 });
 
 
@@ -195,14 +216,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const select = document.getElementById("country_code");
 
-select.addEventListener("change", function () {
-    const option = this.options[this.selectedIndex];
-    const flag = option.getAttribute("data-flag");
-    const code = option.getAttribute("data-code");
+if (select) {
+    select.addEventListener("change", function () {
+        const option = this.options[this.selectedIndex];
+        const flag = option.getAttribute("data-flag");
+        const code = option.getAttribute("data-code");
 
-    // Change the text permanently (so works on mobile too)
-    option.textContent = `${flag} ${code}`;
-});
+        // Change the text permanently (so works on mobile too)
+        option.textContent = `${flag} ${code}`;
+    });
+}
 
 let currentUnit = '1bhk';
 let currentSlideIndex = 0;
@@ -234,6 +257,8 @@ document.querySelectorAll('.unit-option').forEach(button => {
 // Slide navigation functionality
 function updateSlides() {
     const activeGallery = document.querySelector('.gallery-images.active');
+    if (!activeGallery) return;
+    
     const slides = activeGallery.querySelectorAll('.image-slide');
 
     slides.forEach((slide, index) => {
@@ -243,8 +268,11 @@ function updateSlides() {
 
 function updateNavDots() {
     const activeGallery = document.querySelector('.gallery-images.active');
+    if (!activeGallery) return;
+    
     const slides = activeGallery.querySelectorAll('.image-slide');
     const navContainer = document.getElementById('gallery-nav');
+    if (!navContainer) return;
 
     // Clear existing dots
     navContainer.innerHTML = '';
@@ -264,8 +292,12 @@ function updateNavDots() {
 
 function changeSlide(direction) {
     const activeGallery = document.querySelector('.gallery-images.active');
+    if (!activeGallery) return;
+    
     const slides = activeGallery.querySelectorAll('.image-slide');
     const totalSlides = slides.length;
+    
+    if (totalSlides === 0) return;
 
     currentSlideIndex += direction;
 
@@ -279,26 +311,32 @@ function changeSlide(direction) {
     updateNavDots();
 }
 
-// Auto-advance slides every 5 seconds
-setInterval(() => {
-    changeSlide(1);
-}, 5000);
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-advance slides every 5 seconds
+    setInterval(() => {
+        changeSlide(1);
+    }, 5000);
 
-// Initialize navigation dots for 1BHK (default)
-updateNavDots();
+    // Initialize navigation dots for 1BHK (default)
+    updateNavDots();
+});
 
 // Touch/swipe functionality for mobile
 let touchStartX = 0;
 let touchEndX = 0;
 
-document.querySelector('.image-gallery').addEventListener('touchstart', function (e) {
-    touchStartX = e.changedTouches[0].screenX;
-});
+const imageGallery = document.querySelector('.image-gallery');
+if (imageGallery) {
+    imageGallery.addEventListener('touchstart', function (e) {
+        touchStartX = e.changedTouches[0].screenX;
+    });
 
-document.querySelector('.image-gallery').addEventListener('touchend', function (e) {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-});
+    imageGallery.addEventListener('touchend', function (e) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+}
 
 function handleSwipe() {
     if (touchEndX < touchStartX - 50) {
